@@ -1,0 +1,158 @@
+"""Mock store data for Maison Verre, a fictional luxury fashion retailer.
+
+Today's date in the simulation is fixed so return windows are deterministic.
+"""
+import copy
+from datetime import date
+
+TODAY = date(2026, 11, 8)
+
+# product_id -> product with stock per size
+PRODUCTS = {
+    "P100": {"name": "Silk Midi Dress", "designer": "Atelier Noor", "category": "ready-to-wear",
+             "stock": {"XS": 2, "S": 3, "M": 1, "L": 0}},
+    "P101": {"name": "Double-Face Wool Coat", "designer": "Halden", "category": "ready-to-wear",
+             "stock": {"S": 1, "M": 2, "L": 1}},
+    "P102": {"name": "Leather Top-Handle Bag", "designer": "Vela Studio", "category": "bags",
+             "stock": {"ONE SIZE": 4}},
+    "P103": {"name": "Cashmere Crewneck", "designer": "Ostra", "category": "ready-to-wear",
+             "stock": {"S": 5, "M": 5, "L": 2}},
+    "P104": {"name": "Pleated Satin Skirt", "designer": "Atelier Noor", "category": "ready-to-wear",
+             "stock": {"XS": 1, "S": 1, "M": 1}},
+    "P105": {"name": "Lace Bra and Brief Set", "designer": "Mireille", "category": "lingerie",
+             "stock": {"S": 3, "M": 3}},
+    "P106": {"name": "Poplin Shirt", "designer": "Halden", "category": "ready-to-wear",
+             "stock": {"XS": 2, "S": 2, "M": 2, "L": 2}},
+    "P107": {"name": "Eau de Parfum 100ml", "designer": "Maison Iris", "category": "fragrance",
+             "stock": {"ONE SIZE": 10}},
+    "P108": {"name": "Suede Low-Top Sneaker", "designer": "Corsa", "category": "shoes",
+             "stock": {"37": 1, "38": 2, "39": 0, "40": 1}},
+    "P109": {"name": "Draped Jersey Dress", "designer": "Ostra", "category": "ready-to-wear",
+             "stock": {"XS": 1, "S": 4, "M": 0, "L": 2}},
+    "P110": {"name": "Tailored Trouser", "designer": "Halden", "category": "ready-to-wear",
+             "stock": {"S": 2, "M": 0, "L": 0}},
+    "P111": {"name": "Embroidered Linen Jacket", "designer": "Vela Studio", "category": "ready-to-wear",
+             "stock": {"S": 1, "M": 1}},
+    "P112": {"name": "Crystal Drop Earrings", "designer": "Lune", "category": "fine jewelry",
+             "stock": {"ONE SIZE": 3}},
+    "P113": {"name": "Python Clutch", "designer": "Vela Studio", "category": "bags",
+             "stock": {"ONE SIZE": 1}},
+    "P114": {"name": "Sequin Evening Gown", "designer": "Atelier Noor", "category": "ready-to-wear",
+             "stock": {"S": 1, "M": 1}},
+    "P115": {"name": "Gold Signet Ring", "designer": "Lune", "category": "fine jewelry",
+             "stock": {"6": 2, "7": 1}},
+}
+
+
+def _item(item_id, pid, size, price, markdown=False, final_sale=False, color=None):
+    p = PRODUCTS[pid]
+    it = {"item_id": item_id, "product_id": pid, "name": p["name"], "designer": p["designer"],
+          "category": p["category"], "size": size, "price_paid": price,
+          "markdown": markdown, "final_sale": final_sale}
+    if color:
+        it["color"] = color
+    return it
+
+
+ORDERS = {
+    "MV1001": {"email": "ava.chen@example.com", "customer": "Ava Chen", "delivered": "2026-11-01",
+               "payment": "Visa ending 4417", "is_gift": False,
+               "items": [_item("I1", "P100", "S", 1450)]},
+    "MV1002": {"email": "ben.ortiz@example.com", "customer": "Ben Ortiz", "delivered": "2026-10-20",
+               "payment": "Amex ending 1002", "is_gift": False,
+               "items": [_item("I1", "P101", "M", 2800)]},
+    "MV1003": {"email": "chloe.ng@example.com", "customer": "Chloe Ng", "delivered": "2026-10-01",
+               "payment": "Visa ending 3003", "is_gift": False,
+               "items": [_item("I1", "P102", "ONE SIZE", 2150)]},
+    "MV1004": {"email": "dev.patel@example.com", "customer": "Dev Patel", "delivered": "2026-10-30",
+               "payment": "Mastercard ending 4004", "is_gift": False,
+               "items": [_item("I1", "P103", "M", 595, markdown=True)]},
+    "MV1005": {"email": "elena.rossi@example.com", "customer": "Elena Rossi", "delivered": "2026-10-22",
+               "payment": "Visa ending 5005", "is_gift": False,
+               "items": [_item("I1", "P104", "S", 640, markdown=True)]},
+    "MV1006": {"email": "farah.k@example.com", "customer": "Farah Khan", "delivered": "2026-11-03",
+               "payment": "Amex ending 6006", "is_gift": False,
+               "items": [_item("I1", "P105", "S", 310, final_sale=True), _item("I2", "P106", "S", 480)]},
+    "MV1007": {"email": "gia.moretti@example.com", "customer": "Gia Moretti", "delivered": "2026-11-05",
+               "payment": "Visa ending 7007", "is_gift": False,
+               "items": [_item("I1", "P107", "ONE SIZE", 290, final_sale=True)]},
+    "MV1008": {"email": "hana.lee@example.com", "customer": "Hana Lee", "delivered": "2026-11-02",
+               "payment": "Mastercard ending 8008", "is_gift": False,
+               "items": [_item("I1", "P108", "38", 690)]},
+    "MV1009": {"email": "iris.wu@example.com", "customer": "Iris Wu", "delivered": "2026-11-04",
+               "payment": "Visa ending 9009", "is_gift": False,
+               "items": [_item("I1", "P109", "M", 1180)]},
+    "MV1010": {"email": "jade.brooks@example.com", "customer": "Jade Brooks", "delivered": "2026-11-02",
+               "payment": "Amex ending 1010", "is_gift": False,
+               "items": [_item("I1", "P110", "S", 850)]},
+    "MV1011": {"email": "kai.santos@example.com", "customer": "Kai Santos", "delivered": "2026-11-06",
+               "payment": "Visa ending 1111", "is_gift": False,
+               "items": [_item("I1", "P111", "M", 1950)]},
+    "MV1012": {"email": "leo.vance@example.com", "customer": "Leo Vance", "delivered": "2026-11-03",
+               "payment": "Mastercard ending 1212", "is_gift": True,
+               "items": [_item("I1", "P112", "ONE SIZE", 780)]},
+    "MV1013": {"email": "mia.dubois@example.com", "customer": "Mia Dubois", "delivered": "2026-11-01",
+               "payment": "Visa ending 1313", "is_gift": False,
+               "items": [_item("I1", "P114", "S", 3200)]},
+    "MV1014": {"email": "nora.fitz@example.com", "customer": "Nora Fitzgerald", "delivered": "2026-11-03",
+               "payment": "Amex ending 1414", "is_gift": False,
+               "items": [_item("I1", "P106", "M", 480), _item("I2", "P103", "S", 850)]},
+    "MV1015": {"email": "olive.grant@example.com", "customer": "Olive Grant", "delivered": "2026-10-31",
+               "payment": "Visa ending 1515", "is_gift": False,
+               "items": [_item("I1", "P101", "S", 2800)]},
+    "MV1016": {"email": "priya.rao@example.com", "customer": "Priya Rao", "delivered": "2026-11-02",
+               "payment": "Mastercard ending 1616", "is_gift": False,
+               "items": [_item("I1", "P100", "M", 1450)]},
+    "MV1017": {"email": "quinn.tate@example.com", "customer": "Quinn Tate", "delivered": "2026-10-14",
+               "payment": "Visa ending 1717", "is_gift": False,
+               "items": [_item("I1", "P111", "S", 1950)]},
+    "MV1018": {"email": "rosa.ueda@example.com", "customer": "Rosa Ueda", "delivered": "2026-11-04",
+               "payment": "Amex ending 1818", "is_gift": False,
+               "items": [_item("I1", "P113", "ONE SIZE", 4100, final_sale=True)]},
+    "MV1019": {"email": "sam.vidal@example.com", "customer": "Sam Vidal", "delivered": "2026-11-05",
+               "payment": "Visa ending 1919", "is_gift": False,
+               "items": [_item("I1", "P103", "L", 850)]},
+    "MV1020": {"email": "tess.wilde@example.com", "customer": "Tess Wilde", "delivered": "2026-11-02",
+               "payment": "Mastercard ending 2020", "is_gift": False,
+               "items": [_item("I1", "P115", "6", 1650, final_sale=True)]},
+    # ---- hard set ----
+    "MV1021": {"email": "uma.ward@example.com", "customer": "Uma Ward", "delivered": "2026-10-25",
+               "payment": "Visa ending 2121", "is_gift": False,
+               "items": [_item("I1", "P106", "S", 480)]},
+    "MV1022": {"email": "vera.lind@example.com", "customer": "Vera Lind", "delivered": "2026-10-24",
+               "payment": "Amex ending 2222", "is_gift": False,
+               "items": [_item("I1", "P100", "XS", 1450)]},
+    "MV1023": {"email": "will.ash@example.com", "customer": "Will Ash", "delivered": "2026-10-08",
+               "payment": "Visa ending 2323", "is_gift": False,
+               "items": [_item("I1", "P101", "L", 2800)]},
+    "MV1024": {"email": "xena.park@example.com", "customer": "Xena Park", "delivered": "2026-10-20",
+               "payment": "Mastercard ending 2424", "is_gift": False,
+               "items": [_item("I1", "P111", "S", 1950), _item("I2", "P104", "XS", 640, markdown=True)]},
+    "MV1025": {"email": "yara.cole@example.com", "customer": "Yara Cole", "delivered": "2026-11-03",
+               "payment": "Visa ending 2525", "is_gift": False,
+               "items": [_item("I1", "P109", "L", 1180)]},
+    "MV1026": {"email": "zoe.hart@example.com", "customer": "Zoe Hart", "delivered": "2026-11-04",
+               "payment": "Amex ending 2626", "is_gift": False,
+               "items": [_item("I1", "P114", "M", 3200)]},
+    "MV1027": {"email": "alex.moss@example.com", "customer": "Alex Moss", "delivered": "2026-10-17",
+               "payment": "Visa ending 2727", "is_gift": False,
+               "items": [_item("I1", "P103", "M", 850)]},
+    "MV1028": {"email": "bea.kent@example.com", "customer": "Bea Kent", "delivered": "2026-11-03",
+               "payment": "Mastercard ending 2828", "is_gift": False,
+               "items": [_item("I1", "P106", "L", 480)]},
+    "MV1029": {"email": "bea.kent@example.com", "customer": "Bea Kent", "delivered": "2026-10-19",
+               "payment": "Mastercard ending 2828", "is_gift": False,
+               "items": [_item("I1", "P101", "M", 2800)]},
+    "MV1030": {"email": "cara.nash@example.com", "customer": "Cara Nash", "delivered": "2026-11-02",
+               "payment": "Visa ending 3030", "is_gift": False,
+               "items": [_item("I1", "P108", "40", 690)]},
+    "MV1031": {"email": "dina.ross@example.com", "customer": "Dina Ross", "delivered": "2026-11-05",
+               "payment": "Amex ending 3131", "is_gift": False,
+               "items": [_item("I1", "P106", "S", 480, color="white"), _item("I2", "P106", "S", 480, color="blue")]},
+}
+
+
+def fresh_db():
+    """A clean copy of the store for one conversation."""
+    return {"products": copy.deepcopy(PRODUCTS), "orders": copy.deepcopy(ORDERS),
+            "returns": [], "exchanges": [], "escalations": []}

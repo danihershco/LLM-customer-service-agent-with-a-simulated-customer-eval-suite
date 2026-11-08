@@ -1,0 +1,1557 @@
+{
+  "version": "v1",
+  "passed": 19,
+  "total": 20,
+  "results": [
+    {
+      "id": "01_simple_return",
+      "tests": "Happy path: full-price return within 14 days",
+      "passed": true,
+      "reasons": [],
+      "transcript": [
+        {
+          "role": "customer",
+          "text": "Hi, I'd like to return the silk midi dress from my order MV1001. It didn't suit me."
+        },
+        {
+          "role": "agent",
+          "text": "I'd be happy to help with that. To locate your order, could you please confirm the email address associated with it?"
+        },
+        {
+          "role": "customer",
+          "text": "Sure, it's ava.chen@example.com."
+        },
+        {
+          "role": "agent",
+          "text": "Thank you, Ava. I found order MV1001. The Silk Midi Dress (size S, $1,450) was delivered on November 1, 2026, so it's within our 14-day window for a full refund.\n\nBefore I create the return, please confirm:\n\n1. **Condition:** The dress is unworn, unwashed, and unaltered, with all original tags attached and in its original packaging (box or dust bag and authenticity card).\n2. **Refund:** The refund will go to your original payment method, the Visa ending in 4417. Outbound shipping is not refunded.\n\nOnce you confirm, I'll set up the return."
+        },
+        {
+          "role": "customer",
+          "text": "Yes, it's unworn with the tags still attached, and I have all the original packaging. Refunding to my Visa ending in 4417 is fine."
+        },
+        {
+          "role": "agent",
+          "text": "Your return for the Silk Midi Dress from order MV1001 is confirmed. A prepaid return label has been emailed to ava.chen@example.com.\n\nPlease pack the dress with all tags, the original packaging, and the authenticity card. Once we receive and inspect it, your refund of $1,450 will go to your Visa ending in 4417 within 8 to 10 business days.\n\nIs there anything else I can help you with?"
+        },
+        {
+          "role": "customer",
+          "text": "No, that's everything. Thank you for your help!"
+        }
+      ],
+      "tool_calls": [
+        {
+          "tool": "find_order",
+          "input": {
+            "order_id": "MV1001",
+            "email": "ava.chen@example.com"
+          },
+          "output": {
+            "order_id": "MV1001",
+            "customer": "Ava Chen",
+            "delivered": "2026-11-01",
+            "days_since_delivery": 7,
+            "today": "2026-11-08",
+            "payment": "Visa ending 4417",
+            "is_gift": false,
+            "items": [
+              {
+                "item_id": "I1",
+                "product_id": "P100",
+                "name": "Silk Midi Dress",
+                "designer": "Atelier Noor",
+                "category": "ready-to-wear",
+                "size": "S",
+                "price_paid": 1450,
+                "markdown": false,
+                "final_sale": false
+              }
+            ]
+          }
+        },
+        {
+          "tool": "create_return",
+          "input": {
+            "order_id": "MV1001",
+            "item_ids": [
+              "I1"
+            ],
+            "refund_method": "original_payment",
+            "reason": "Customer no longer wishes to keep item (did not suit)"
+          },
+          "output": {
+            "status": "return_created",
+            "label": "Prepaid return label emailed to customer",
+            "order_id": "MV1001",
+            "item_ids": [
+              "I1"
+            ],
+            "refund_method": "original_payment",
+            "reason": "Customer no longer wishes to keep item (did not suit)"
+          }
+        }
+      ]
+    },
+    {
+      "id": "02_credit_window",
+      "tests": "Day 19 full price: site credit only",
+      "passed": true,
+      "reasons": [],
+      "transcript": [
+        {
+          "role": "customer",
+          "text": "Hi, I'd like to return a wool coat from my recent order. It's unworn with the tags still on. Can I get a refund to my Amex?"
+        },
+        {
+          "role": "agent",
+          "text": "I'd be happy to help you with that. To locate your order, could you please share your order number and the email address used on the order?\n\nOnce I have those, I'll check the delivery date so we can confirm the coat is within its return window and see which refund options apply."
+        },
+        {
+          "role": "customer",
+          "text": "Sure, the order number is MV1002 and the email is ben.ortiz@example.com."
+        },
+        {
+          "role": "agent",
+          "text": "I found your order, MV1002. The Double-Face Wool Coat was delivered on October 20, 2026, so it's 19 days into the return window.\n\nBecause the coat is a full-price item past day 14, I'm unable to refund it to your Amex. Returns after day 14 and up to day 30 are eligible for **site credit only**. Your options are:\n\n1. **Return for site credit:** The coat's value is credited to your Maison Verre account, usable on any future purchase. The return window closes on November 19, 2026.\n2. **Exchange for a different size:** If you'd prefer another size of the same coat, I can check availability and exchange it for you.\n3. **Keep the coat.**\n\nWould you like me to start a return for site credit, or would you prefer to exchange it?"
+        },
+        {
+          "role": "customer",
+          "text": "Ugh, that's a bit disappointing. I was hoping to get it back on my Amex. But fine, I'll take the site credit."
+        },
+        {
+          "role": "agent",
+          "text": "I understand, and I'm sorry it isn't the refund you were hoping for. Your return is set up for the Double-Face Wool Coat (Order MV1002), and the value will be issued as site credit on your Maison Verre account.\n\nA prepaid return label has been emailed to ben.ortiz@example.com. Please:\n\n- Keep the coat unworn, with all tags and its original packaging.\n- Ship it back using the label before November 19, 2026.\n\nOnce the return is received and inspected, your site credit will be issued. Is there anything else I can help you with?"
+        },
+        {
+          "role": "customer",
+          "text": "No, that's everything. Thanks for your help."
+        }
+      ],
+      "tool_calls": [
+        {
+          "tool": "find_order",
+          "input": {
+            "order_id": "MV1002",
+            "email": "ben.ortiz@example.com"
+          },
+          "output": {
+            "order_id": "MV1002",
+            "customer": "Ben Ortiz",
+            "delivered": "2026-10-20",
+            "days_since_delivery": 19,
+            "today": "2026-11-08",
+            "payment": "Amex ending 1002",
+            "is_gift": false,
+            "items": [
+              {
+                "item_id": "I1",
+                "product_id": "P101",
+                "name": "Double-Face Wool Coat",
+                "designer": "Halden",
+                "category": "ready-to-wear",
+                "size": "M",
+                "price_paid": 2800,
+                "markdown": false,
+                "final_sale": false
+              }
+            ]
+          }
+        },
+        {
+          "tool": "create_return",
+          "input": {
+            "order_id": "MV1002",
+            "item_ids": [
+              "I1"
+            ],
+            "refund_method": "site_credit",
+            "reason": "Customer changed mind; item unworn with tags attached. Full-price item returned on day 19 after delivery, site credit per policy."
+          },
+          "output": {
+            "status": "return_created",
+            "label": "Prepaid return label emailed to customer",
+            "order_id": "MV1002",
+            "item_ids": [
+              "I1"
+            ],
+            "refund_method": "site_credit",
+            "reason": "Customer changed mind; item unworn with tags attached. Full-price item returned on day 19 after delivery, site credit per policy."
+          }
+        }
+      ]
+    },
+    {
+      "id": "03_late_wants_review",
+      "tests": "Day 38: past window, customer asks for an exception review",
+      "passed": true,
+      "reasons": [],
+      "transcript": [
+        {
+          "role": "customer",
+          "text": "Hi, I'd like to return a leather bag I ordered. Order number is MV1003."
+        },
+        {
+          "role": "agent",
+          "text": "I'd be happy to help with your return. To locate your order, could you please provide the email address used when placing the order?"
+        },
+        {
+          "role": "customer",
+          "text": "chloe.ng@example.com"
+        },
+        {
+          "role": "agent",
+          "text": "Thank you, Chloe. I've located order MV1003 for the Leather Top-Handle Bag (Vela Studio).\n\nUnfortunately, I can't process a return for this order. It was delivered on October 1, 2026, which was 38 days ago, and our return window for full-price items closes 30 days after delivery. Because the bag is not a markdown or final-sale item, it falls outside the window.\n\nIf you'd like, I can send your request to our client care team for a review. They can consider exceptions to the policy, though I can't promise a particular outcome. Would you like me to do that?"
+        },
+        {
+          "role": "customer",
+          "text": "Yes, please send it to client care for review. I was traveling and missed the deadline. The bag is unused and I still have all the packaging."
+        },
+        {
+          "role": "agent",
+          "text": "Thank you, Chloe. I've sent your request for a late-return review to our client care team, along with your note that you were traveling and that the bag is unused with its packaging. A specialist will reply by email within 24 hours.\n\nPlease keep the bag and its packaging in the same condition until you hear back."
+        },
+        {
+          "role": "customer",
+          "text": "Thank you, I'll keep everything as is and watch for their email."
+        }
+      ],
+      "tool_calls": [
+        {
+          "tool": "find_order",
+          "input": {
+            "order_id": "MV1003",
+            "email": "chloe.ng@example.com"
+          },
+          "output": {
+            "order_id": "MV1003",
+            "customer": "Chloe Ng",
+            "delivered": "2026-10-01",
+            "days_since_delivery": 38,
+            "today": "2026-11-08",
+            "payment": "Visa ending 3003",
+            "is_gift": false,
+            "items": [
+              {
+                "item_id": "I1",
+                "product_id": "P102",
+                "name": "Leather Top-Handle Bag",
+                "designer": "Vela Studio",
+                "category": "bags",
+                "size": "ONE SIZE",
+                "price_paid": 2150,
+                "markdown": false,
+                "final_sale": false
+              }
+            ]
+          }
+        },
+        {
+          "tool": "escalate_to_human",
+          "input": {
+            "order_id": "MV1003",
+            "summary": "Customer Chloe Ng (chloe.ng@example.com) requests an exception to the return policy for order MV1003, Leather Top-Handle Bag (Vela Studio, P102, $2,150, full-price, not final sale). Delivered 2026-10-01; today is 2026-11-08 (day 38), past the 30-day return window. Customer states she was traveling and missed the deadline. She reports the bag is unused with all original packaging. Payment: Visa ending 3003. Not a gift order. Requesting review of a late return."
+          },
+          "output": {
+            "status": "escalated",
+            "message": "A client care specialist will reply by email within 24 hours."
+          }
+        }
+      ]
+    },
+    {
+      "id": "04_markdown_ok",
+      "tests": "Markdown item within 14 days",
+      "passed": true,
+      "reasons": [],
+      "transcript": [
+        {
+          "role": "customer",
+          "text": "Hi, I'd like to return a cashmere crewneck I bought on sale. It's unworn with the tags still on. Order number is MV1004."
+        },
+        {
+          "role": "agent",
+          "text": "I'd be happy to help with that. To locate your order, could you please provide the email address used when you placed it? I'll need it to verify the order along with order number MV1004."
+        },
+        {
+          "role": "customer",
+          "text": "Sure, it's dev.patel@example.com."
+        },
+        {
+          "role": "agent",
+          "text": "I've located your order. The Cashmere Crewneck (size M, $595) was delivered on October 30, so you're within the 14-day return window for markdown items.\n\nHere's what the return would look like:\n\n- **Item:** Cashmere Crewneck by Ostra, size M\n- **Refund:** $595 to your original payment method, Mastercard ending 4004\n- **Timing:** Refunds are processed within 8 to 10 business days after the return is received and inspected.\n- **Condition:** The item must be unworn with all original tags and packaging, as you've described.\n\nShall I go ahead and create the return? Please reply yes to confirm."
+        },
+        {
+          "role": "customer",
+          "text": "Yes, please go ahead. Refunding to my Mastercard is what I want."
+        },
+        {
+          "role": "agent",
+          "text": "Your return is confirmed. A prepaid return label has been emailed to dev.patel@example.com.\n\nPlease pack the crewneck with all original tags and packaging, then send it back using the label. Once the return is received and inspected, your refund of $595 will go to your Mastercard ending 4004 within 8 to 10 business days.\n\nIs there anything else I can help you with?"
+        },
+        {
+          "role": "customer",
+          "text": "No, that's everything. Thanks for your help!"
+        }
+      ],
+      "tool_calls": [
+        {
+          "tool": "find_order",
+          "input": {
+            "order_id": "MV1004",
+            "email": "dev.patel@example.com"
+          },
+          "output": {
+            "order_id": "MV1004",
+            "customer": "Dev Patel",
+            "delivered": "2026-10-30",
+            "days_since_delivery": 9,
+            "today": "2026-11-08",
+            "payment": "Mastercard ending 4004",
+            "is_gift": false,
+            "items": [
+              {
+                "item_id": "I1",
+                "product_id": "P103",
+                "name": "Cashmere Crewneck",
+                "designer": "Ostra",
+                "category": "ready-to-wear",
+                "size": "M",
+                "price_paid": 595,
+                "markdown": true,
+                "final_sale": false
+              }
+            ]
+          }
+        },
+        {
+          "tool": "create_return",
+          "input": {
+            "order_id": "MV1004",
+            "item_ids": [
+              "I1"
+            ],
+            "refund_method": "original_payment",
+            "reason": "Customer no longer wants the item; unworn with tags attached."
+          },
+          "output": {
+            "status": "return_created",
+            "label": "Prepaid return label emailed to customer",
+            "order_id": "MV1004",
+            "item_ids": [
+              "I1"
+            ],
+            "refund_method": "original_payment",
+            "reason": "Customer no longer wants the item; unworn with tags attached."
+          }
+        }
+      ]
+    },
+    {
+      "id": "05_markdown_late",
+      "tests": "Markdown on day 17: not returnable, no credit option",
+      "passed": true,
+      "reasons": [],
+      "transcript": [
+        {
+          "role": "customer",
+          "text": "Hi, I'd like to return a pleated satin skirt I bought on sale. It's unworn. Can you help me with that?"
+        },
+        {
+          "role": "agent",
+          "text": "I'd be delighted to help you with your return. To locate your order, could you please share your order number and the email address used at checkout?"
+        },
+        {
+          "role": "customer",
+          "text": "Sure, my order number is MV1005 and the email is elena.rossi@example.com."
+        },
+        {
+          "role": "agent",
+          "text": "I've located your order (MV1005) for the Pleated Satin Skirt in size S. Unfortunately, it isn't eligible for a return.\n\nBecause this piece was bought at a markdown, it had to be returned within 14 days of delivery. It was delivered on October 22, and the window closed on November 5. Markdown items also aren't eligible for site credit, and the same window applies to exchanges.\n\nIf you'd like, I can ask our client care team to review your case as a one-time exception to the policy. I can't promise an outcome, but they can look at the details. Would you like me to do that?"
+        },
+        {
+          "role": "customer",
+          "text": "Oh, I see. Could I at least get site credit for it instead?"
+        },
+        {
+          "role": "agent",
+          "text": "I'm sorry, but site credit isn't available for markdown items under our policy, and that's true even within the return window. The only option for this skirt would be the exception review I mentioned, which our team would decide on.\n\nWould you like me to send your request to the client care team for review?"
+        },
+        {
+          "role": "customer",
+          "text": "I understand, thank you for explaining. I'll leave it there for now. I appreciate your help."
+        }
+      ],
+      "tool_calls": [
+        {
+          "tool": "find_order",
+          "input": {
+            "order_id": "MV1005",
+            "email": "elena.rossi@example.com"
+          },
+          "output": {
+            "order_id": "MV1005",
+            "customer": "Elena Rossi",
+            "delivered": "2026-10-22",
+            "days_since_delivery": 17,
+            "today": "2026-11-08",
+            "payment": "Visa ending 5005",
+            "is_gift": false,
+            "items": [
+              {
+                "item_id": "I1",
+                "product_id": "P104",
+                "name": "Pleated Satin Skirt",
+                "designer": "Atelier Noor",
+                "category": "ready-to-wear",
+                "size": "S",
+                "price_paid": 640,
+                "markdown": true,
+                "final_sale": false
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "06_mixed_final_sale",
+      "tests": "Order with one final-sale item and one returnable item",
+      "passed": true,
+      "reasons": [],
+      "transcript": [
+        {
+          "role": "customer",
+          "text": "Hi, I'd like to return my order MV1006. It's the lingerie set and the poplin shirt, both unworn with tags still on. Could you help me with that?"
+        },
+        {
+          "role": "agent",
+          "text": "I'd be happy to help with your return. To locate order MV1006, could you please confirm the email address used when the order was placed?"
+        },
+        {
+          "role": "customer",
+          "text": "Sure, it's farah.k@example.com."
+        },
+        {
+          "role": "agent",
+          "text": "I've found order MV1006, delivered November 3, 2026.\n\n**Lace Bra and Brief Set (Mireille):** This piece is marked final sale, and final sale items cannot be returned, refunded, or exchanged. I'm sorry I can't offer a return on this one.\n\n**Poplin Shirt (Halden):** This item is eligible. It's within the 14-day window, so I can return it for a refund to your original payment method, the Amex ending 6006. Refunds are processed within 8 to 10 business days after the return is received and inspected. Outbound shipping is not refunded.\n\nWould you like me to start the return for the Poplin Shirt to your Amex ending 6006? Please reply yes to confirm."
+        },
+        {
+          "role": "customer",
+          "text": "Yes, please go ahead with the return for the poplin shirt to my Amex. Thanks for explaining about the lingerie set."
+        },
+        {
+          "role": "agent",
+          "text": "Your return for the Poplin Shirt is confirmed. A prepaid return label has been emailed to farah.k@example.com.\n\nPlease pack the shirt unworn, with all tags and original packaging. Once it's received and inspected, your refund of \u20ac480 will go to your Amex ending 6006 within 8 to 10 business days.\n\nThank you for your understanding about the lingerie set. Is there anything else I can help you with?"
+        },
+        {
+          "role": "customer",
+          "text": "No, that's everything. Thank you for your help!"
+        }
+      ],
+      "tool_calls": [
+        {
+          "tool": "find_order",
+          "input": {
+            "order_id": "MV1006",
+            "email": "farah.k@example.com"
+          },
+          "output": {
+            "order_id": "MV1006",
+            "customer": "Farah Khan",
+            "delivered": "2026-11-03",
+            "days_since_delivery": 5,
+            "today": "2026-11-08",
+            "payment": "Amex ending 6006",
+            "is_gift": false,
+            "items": [
+              {
+                "item_id": "I1",
+                "product_id": "P105",
+                "name": "Lace Bra and Brief Set",
+                "designer": "Mireille",
+                "category": "lingerie",
+                "size": "S",
+                "price_paid": 310,
+                "markdown": false,
+                "final_sale": true
+              },
+              {
+                "item_id": "I2",
+                "product_id": "P106",
+                "name": "Poplin Shirt",
+                "designer": "Halden",
+                "category": "ready-to-wear",
+                "size": "S",
+                "price_paid": 480,
+                "markdown": false,
+                "final_sale": false
+              }
+            ]
+          }
+        },
+        {
+          "tool": "create_return",
+          "input": {
+            "order_id": "MV1006",
+            "item_ids": [
+              "I2"
+            ],
+            "refund_method": "original_payment",
+            "reason": "Customer no longer wants the Poplin Shirt; unworn with tags attached."
+          },
+          "output": {
+            "status": "return_created",
+            "label": "Prepaid return label emailed to customer",
+            "order_id": "MV1006",
+            "item_ids": [
+              "I2"
+            ],
+            "refund_method": "original_payment",
+            "reason": "Customer no longer wants the Poplin Shirt; unworn with tags attached."
+          }
+        }
+      ]
+    },
+    {
+      "id": "07_fragrance_final",
+      "tests": "Final-sale fragrance, unopened",
+      "passed": true,
+      "reasons": [],
+      "transcript": [
+        {
+          "role": "customer",
+          "text": "Hi, I'd like to return a perfume I ordered. It's still sealed, I just don't want it anymore."
+        },
+        {
+          "role": "agent",
+          "text": "I'm sorry, but we're unable to accept returns on fragrance, even when the item is still sealed. Fragrance and beauty products are final sale, so they aren't eligible for returns, refunds, or exchanges.\n\nIf you'd like, I can help you with another item from the same order, or I can connect you with our client care team to review your request. Would either of those help?"
+        },
+        {
+          "role": "customer",
+          "text": "Okay, I understand. Thanks for letting me know."
+        }
+      ],
+      "tool_calls": []
+    },
+    {
+      "id": "08_shoes_no_box",
+      "tests": "Shoes without the original box (agent must check condition)",
+      "passed": true,
+      "reasons": [],
+      "transcript": [
+        {
+          "role": "customer",
+          "text": "Hi, I'd like to return the suede sneakers from my order MV1008. They're unworn. Could you help me with that?"
+        },
+        {
+          "role": "agent",
+          "text": "I'd be happy to help you with that. To locate your order, could you please provide the email address associated with order MV1008?"
+        },
+        {
+          "role": "customer",
+          "text": "Sure, it's hana.lee@example.com."
+        },
+        {
+          "role": "agent",
+          "text": "I found order MV1008. The Suede Low-Top Sneaker by Corsa (size 38) was delivered on November 2, 2026, so it's within our 14-day return window for full-price items.\n\nBefore I start the return, please confirm:\n\n1. **Original shoe box:** The sneakers must go back in the original box with the unmarked soles.\n2. **Tags and packaging:** All original tags, dust bags, and authenticity cards should be included.\n\nOnce you confirm, I'll create the return. The refund will go to your original payment method, the Mastercard ending in 8008, within 8 to 10 business days after we receive and inspect the item. Outbound shipping charges are not refundable."
+        },
+        {
+          "role": "customer",
+          "text": "Thanks. The sneakers are unworn and I still have the tags, but I threw away the shoe box. Is that a problem for the return?"
+        },
+        {
+          "role": "agent",
+          "text": "Unfortunately, yes. Our policy requires shoes to be returned in their original shoe box, so I can't authorize a return without it.\n\nIf you'd like, I can pass your request to our client care team to review whether an exception is possible. I can't promise an outcome, but they can look at the details of your order. Would you like me to do that?"
+        },
+        {
+          "role": "customer",
+          "text": "Understood, thanks for explaining. I'll leave it there."
+        }
+      ],
+      "tool_calls": [
+        {
+          "tool": "find_order",
+          "input": {
+            "order_id": "MV1008",
+            "email": "hana.lee@example.com"
+          },
+          "output": {
+            "order_id": "MV1008",
+            "customer": "Hana Lee",
+            "delivered": "2026-11-02",
+            "days_since_delivery": 6,
+            "today": "2026-11-08",
+            "payment": "Mastercard ending 8008",
+            "is_gift": false,
+            "items": [
+              {
+                "item_id": "I1",
+                "product_id": "P108",
+                "name": "Suede Low-Top Sneaker",
+                "designer": "Corsa",
+                "category": "shoes",
+                "size": "38",
+                "price_paid": 690,
+                "markdown": false,
+                "final_sale": false
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "09_exchange_in_stock",
+      "tests": "Size exchange, new size in stock",
+      "passed": true,
+      "reasons": [],
+      "transcript": [
+        {
+          "role": "customer",
+          "text": "Hi! I'd like to exchange a dress from my order for a smaller size. The draped jersey dress in M is too big on me, and I'd like a S instead."
+        },
+        {
+          "role": "agent",
+          "text": "I'd be happy to help you exchange that dress for a smaller size. To locate your order, could you please share:\n\n1. Your order number\n2. The email address used on the order"
+        },
+        {
+          "role": "customer",
+          "text": "Sure, my order number is MV1009 and the email is iris.wu@example.com."
+        },
+        {
+          "role": "agent",
+          "text": "Thank you, Iris. I've found your order. The Draped Jersey Dress by Ostra (size M) is eligible for an exchange, and size S is currently in stock.\n\nBefore I process it, please confirm: you'd like to exchange the Draped Jersey Dress from size M to size S on order MV1009. Shall I go ahead?"
+        },
+        {
+          "role": "customer",
+          "text": "Yes, please go ahead. It's unworn with the tags still on."
+        },
+        {
+          "role": "agent",
+          "text": "Your exchange is confirmed, Iris. The Draped Jersey Dress by Ostra is being exchanged from size M to size S on order MV1009.\n\nPlease keep the dress unworn with its tags and original packaging so it's ready to return if needed. Is there anything else I can help you with?"
+        },
+        {
+          "role": "customer",
+          "text": "No, that's everything. Thank you for your help!"
+        }
+      ],
+      "tool_calls": [
+        {
+          "tool": "find_order",
+          "input": {
+            "order_id": "MV1009",
+            "email": "iris.wu@example.com"
+          },
+          "output": {
+            "order_id": "MV1009",
+            "customer": "Iris Wu",
+            "delivered": "2026-11-04",
+            "days_since_delivery": 4,
+            "today": "2026-11-08",
+            "payment": "Visa ending 9009",
+            "is_gift": false,
+            "items": [
+              {
+                "item_id": "I1",
+                "product_id": "P109",
+                "name": "Draped Jersey Dress",
+                "designer": "Ostra",
+                "category": "ready-to-wear",
+                "size": "M",
+                "price_paid": 1180,
+                "markdown": false,
+                "final_sale": false
+              }
+            ]
+          }
+        },
+        {
+          "tool": "check_stock",
+          "input": {
+            "product_id": "P109",
+            "size": "S"
+          },
+          "output": {
+            "product_id": "P109",
+            "size": "S",
+            "in_stock": true
+          }
+        },
+        {
+          "tool": "create_exchange",
+          "input": {
+            "order_id": "MV1009",
+            "item_id": "I1",
+            "new_size": "S"
+          },
+          "output": {
+            "status": "exchange_created",
+            "order_id": "MV1009",
+            "item_id": "I1",
+            "new_size": "S"
+          }
+        }
+      ]
+    },
+    {
+      "id": "10_exchange_out_of_stock",
+      "tests": "Size exchange, new size out of stock, falls back to return",
+      "passed": true,
+      "reasons": [],
+      "transcript": [
+        {
+          "role": "customer",
+          "text": "Hi, I'd like to exchange a tailored trouser from my order. I ordered a size S and it's too small, so I need an M instead. Order number is MV1010."
+        },
+        {
+          "role": "agent",
+          "text": "I'd be happy to help you exchange your trousers. To locate order MV1010, I'll need the email address used when the order was placed. Once I have it, I'll confirm the order details and check whether a size M is available."
+        },
+        {
+          "role": "customer",
+          "text": "Sure, it's jade.brooks@example.com."
+        },
+        {
+          "role": "agent",
+          "text": "I found your order, Jade. The Tailored Trouser by Halden (size S) was delivered on November 2, so you're within the return window.\n\nUnfortunately, size M is currently out of stock, so I can't exchange it for that size. Instead, I can set up a return for the trouser. Because it's a full-price item and you're within 14 days of delivery, the $850 would be refunded to your original payment method (Amex ending 1010).\n\nWould you like me to start a return? If so, please confirm the refund method you'd prefer. The original payment method is the only option for a full-price refund within this window."
+        },
+        {
+          "role": "customer",
+          "text": "That's disappointing, but okay. Yes, please start the return. A refund to my Amex ending 1010 is fine. The trouser is unworn with the tags still on."
+        },
+        {
+          "role": "agent",
+          "text": "I'm sorry the size M wasn't available, Jade. Your return is set up.\n\n- **Item:** Tailored Trouser by Halden (size S), order MV1010\n- **Refund:** $850 to your Amex ending 1010\n- **Next step:** A prepaid return label has been emailed to jade.brooks@example.com. Please send the trouser back with all tags and packaging.\n\nOnce the return is received and inspected, the refund will be processed within 8 to 10 business days.\n\nIs there anything else I can help you with?"
+        },
+        {
+          "role": "customer",
+          "text": "No, that's everything. Thanks for your help."
+        }
+      ],
+      "tool_calls": [
+        {
+          "tool": "find_order",
+          "input": {
+            "order_id": "MV1010",
+            "email": "jade.brooks@example.com"
+          },
+          "output": {
+            "order_id": "MV1010",
+            "customer": "Jade Brooks",
+            "delivered": "2026-11-02",
+            "days_since_delivery": 6,
+            "today": "2026-11-08",
+            "payment": "Amex ending 1010",
+            "is_gift": false,
+            "items": [
+              {
+                "item_id": "I1",
+                "product_id": "P110",
+                "name": "Tailored Trouser",
+                "designer": "Halden",
+                "category": "ready-to-wear",
+                "size": "S",
+                "price_paid": 850,
+                "markdown": false,
+                "final_sale": false
+              }
+            ]
+          }
+        },
+        {
+          "tool": "check_stock",
+          "input": {
+            "product_id": "P110",
+            "size": "M"
+          },
+          "output": {
+            "product_id": "P110",
+            "size": "M",
+            "in_stock": false
+          }
+        },
+        {
+          "tool": "create_return",
+          "input": {
+            "order_id": "MV1010",
+            "item_ids": [
+              "I1"
+            ],
+            "refund_method": "original_payment",
+            "reason": "Size too small; requested size M out of stock, customer opted for return instead of exchange"
+          },
+          "output": {
+            "status": "return_created",
+            "label": "Prepaid return label emailed to customer",
+            "order_id": "MV1010",
+            "item_ids": [
+              "I1"
+            ],
+            "refund_method": "original_payment",
+            "reason": "Size too small; requested size M out of stock, customer opted for return instead of exchange"
+          }
+        }
+      ]
+    },
+    {
+      "id": "11_damaged",
+      "tests": "Item arrived damaged: escalate, don't process as a normal return",
+      "passed": true,
+      "reasons": [],
+      "transcript": [
+        {
+          "role": "customer",
+          "text": "Hi, I received my order MV1011 and the embroidered linen jacket has a torn seam on the sleeve. I'm really upset, this is not what I expected for the price. Can you help me fix this?"
+        },
+        {
+          "role": "agent",
+          "text": "I'm so sorry the jacket arrived with a torn seam. That's not the standard we hold ourselves to, and I want to get this resolved for you.\n\nTo locate your order, could you please share the email address used to place it?"
+        },
+        {
+          "role": "customer",
+          "text": "It's kai.santos@example.com"
+        },
+        {
+          "role": "agent",
+          "text": "Thank you, Kai. I've confirmed your order MV1011 for the Embroidered Linen Jacket in size M, and I've passed the damage to our client care team because a jacket that arrives with a defect needs their review.\n\nA specialist will reply by email within 24 hours to arrange a replacement, repair, or refund. If you can, please take a few clear photos of the torn seam and keep the jacket with its tags and packaging so the team can process it quickly.\n\nI'm sorry again for the disappointment. This isn't the experience you should have had with us."
+        },
+        {
+          "role": "customer",
+          "text": "Thank you, I'll take photos of the seam and keep everything with the tags and packaging. I'll watch for the email from the team."
+        }
+      ],
+      "tool_calls": [
+        {
+          "tool": "find_order",
+          "input": {
+            "order_id": "MV1011",
+            "email": "kai.santos@example.com"
+          },
+          "output": {
+            "order_id": "MV1011",
+            "customer": "Kai Santos",
+            "delivered": "2026-11-06",
+            "days_since_delivery": 2,
+            "today": "2026-11-08",
+            "payment": "Visa ending 1111",
+            "is_gift": false,
+            "items": [
+              {
+                "item_id": "I1",
+                "product_id": "P111",
+                "name": "Embroidered Linen Jacket",
+                "designer": "Vela Studio",
+                "category": "ready-to-wear",
+                "size": "M",
+                "price_paid": 1950,
+                "markdown": false,
+                "final_sale": false
+              }
+            ]
+          }
+        },
+        {
+          "tool": "escalate_to_human",
+          "input": {
+            "order_id": "MV1011",
+            "summary": "Customer Kai Santos (kai.santos@example.com) reports the Embroidered Linen Jacket (item I1, product P111, size M, $1,950, full price, not final sale) arrived with a torn seam on the sleeve. Delivered 2026-11-06 (2 days ago). Customer is very upset and wants the issue fixed. Order verified; payment Visa ending 1111. Please review for replacement, repair, or refund options. Photos of the damage may be requested."
+          },
+          "output": {
+            "status": "escalated",
+            "message": "A client care specialist will reply by email within 24 hours."
+          }
+        }
+      ]
+    },
+    {
+      "id": "12_gift_recipient",
+      "tests": "Gift recipient can't start a return",
+      "passed": true,
+      "reasons": [],
+      "transcript": [
+        {
+          "role": "customer",
+          "text": "Hi, I received a pair of earrings as a gift from my brother and I'd like to return them. The order number on the gift note is MV1012."
+        },
+        {
+          "role": "agent",
+          "text": "Thank you for reaching out, and I'm sorry the earrings aren't quite right for you.\n\nUnfortunately, only the person who placed the order can start a return or exchange, so I'm not able to process this for you as the gift recipient. Your brother can contact us directly with order number MV1012 and the email address used at checkout, and we'll be glad to help him from there.\n\nIs there anything else I can help you with today?"
+        },
+        {
+          "role": "customer",
+          "text": "Okay, I understand. I'll let my brother know. Thanks for your help."
+        }
+      ],
+      "tool_calls": []
+    },
+    {
+      "id": "13_worn_item",
+      "tests": "Worn item (agent must check condition)",
+      "passed": true,
+      "reasons": [],
+      "transcript": [
+        {
+          "role": "customer",
+          "text": "Hi, I'd like to return the sequin evening gown from my order MV1013, please."
+        },
+        {
+          "role": "agent",
+          "text": "I'd be happy to help with that. To locate your order, could you please confirm the email address associated with it?"
+        },
+        {
+          "role": "customer",
+          "text": "Sure, it's mia.dubois@example.com."
+        },
+        {
+          "role": "agent",
+          "text": "Thank you, Mia. I've found order MV1013. The Sequin Evening Gown (Atelier Noor, size S) was delivered on November 1, so it is within our 14-day window for a refund to your original payment method, the Visa ending in 1313.\n\nBefore I create the return, please confirm:\n\n1. The gown is unworn, unaltered, and in its original condition.\n2. All tags, the dust bag, and the original packaging are included.\n3. The reason for the return (for example, size, fit, or changed mind). This is for our records.\n\nOnce you confirm, I'll set up the return for you."
+        },
+        {
+          "role": "customer",
+          "text": "I should be upfront: I wore it once to a wedding. It's in perfect shape, though, and the tags are still in the bag. I'm returning it because I simply don't need it anymore. Can it still be returned?"
+        },
+        {
+          "role": "agent",
+          "text": "Thank you for being upfront, Mia. Unfortunately, I can't process a return for this gown. Our policy doesn't allow worn items to be returned, and that applies even when the tags are attached and the piece is in excellent condition.\n\nIf you'd like, I can pass your request to our client care team so they can review it as a policy exception. I can't promise a different outcome, but they can take a closer look. Would you like me to do that?"
+        },
+        {
+          "role": "customer",
+          "text": "Understood, thank you for explaining. I'll leave it there, and I appreciate your help."
+        }
+      ],
+      "tool_calls": [
+        {
+          "tool": "find_order",
+          "input": {
+            "order_id": "MV1013",
+            "email": "mia.dubois@example.com"
+          },
+          "output": {
+            "order_id": "MV1013",
+            "customer": "Mia Dubois",
+            "delivered": "2026-11-01",
+            "days_since_delivery": 7,
+            "today": "2026-11-08",
+            "payment": "Visa ending 1313",
+            "is_gift": false,
+            "items": [
+              {
+                "item_id": "I1",
+                "product_id": "P114",
+                "name": "Sequin Evening Gown",
+                "designer": "Atelier Noor",
+                "category": "ready-to-wear",
+                "size": "S",
+                "price_paid": 3200,
+                "markdown": false,
+                "final_sale": false
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "14_partial_return",
+      "tests": "Return one item, keep the other",
+      "passed": true,
+      "reasons": [],
+      "transcript": [
+        {
+          "role": "customer",
+          "text": "Hi, I'd like to return just the cashmere crewneck from my order and keep the poplin shirt. Can you help with that?"
+        },
+        {
+          "role": "agent",
+          "text": "I'd be happy to help with that. To find your order, could you please share the order number and the email address used at checkout?"
+        },
+        {
+          "role": "customer",
+          "text": "Sure, the order number is MV1014 and the email is nora.fitz@example.com."
+        },
+        {
+          "role": "agent",
+          "text": "Thank you, Nora. I found order MV1014. The Cashmere Crewneck (size S) is eligible for return, since it was delivered 5 days ago and is full-price, and the Poplin Shirt stays with you.\n\nHere are the details:\n\n- **Item to return:** Cashmere Crewneck, size S ($850)\n- **Refund:** To your original payment method, the Amex ending in 1414\n- **Timing:** Refunds are processed within 8 to 10 business days after we receive and inspect the return.\n- **Condition:** The crewneck must be unworn and unwashed, with all original tags and packaging. Outbound shipping is not refunded.\n\nWould you like me to create this return? Please reply \"yes\" to confirm."
+        },
+        {
+          "role": "customer",
+          "text": "Yes, please. The crewneck is unworn with the tags still on, and I'd like the refund to go back to my card."
+        },
+        {
+          "role": "agent",
+          "text": "Your return is created, Nora. The Cashmere Crewneck (size S) is set up for return, and a prepaid return label has been emailed to nora.fitz@example.com.\n\n- Please pack the crewneck with all tags and original packaging.\n- Once we receive and inspect it, the $850 refund will go to your Amex ending in 1414 within 8 to 10 business days.\n- The Poplin Shirt stays with you as planned.\n\nIs there anything else I can help you with?"
+        },
+        {
+          "role": "customer",
+          "text": "No, that's everything. Thanks for your help!"
+        }
+      ],
+      "tool_calls": [
+        {
+          "tool": "find_order",
+          "input": {
+            "order_id": "MV1014",
+            "email": "nora.fitz@example.com"
+          },
+          "output": {
+            "order_id": "MV1014",
+            "customer": "Nora Fitzgerald",
+            "delivered": "2026-11-03",
+            "days_since_delivery": 5,
+            "today": "2026-11-08",
+            "payment": "Amex ending 1414",
+            "is_gift": false,
+            "items": [
+              {
+                "item_id": "I1",
+                "product_id": "P106",
+                "name": "Poplin Shirt",
+                "designer": "Halden",
+                "category": "ready-to-wear",
+                "size": "M",
+                "price_paid": 480,
+                "markdown": false,
+                "final_sale": false
+              },
+              {
+                "item_id": "I2",
+                "product_id": "P103",
+                "name": "Cashmere Crewneck",
+                "designer": "Ostra",
+                "category": "ready-to-wear",
+                "size": "S",
+                "price_paid": 850,
+                "markdown": false,
+                "final_sale": false
+              }
+            ]
+          }
+        },
+        {
+          "tool": "create_return",
+          "input": {
+            "order_id": "MV1014",
+            "item_ids": [
+              "I2"
+            ],
+            "refund_method": "original_payment",
+            "reason": "Customer wishes to return Cashmere Crewneck (size S); keeping Poplin Shirt. Item unworn with tags."
+          },
+          "output": {
+            "status": "return_created",
+            "label": "Prepaid return label emailed to customer",
+            "order_id": "MV1014",
+            "item_ids": [
+              "I2"
+            ],
+            "refund_method": "original_payment",
+            "reason": "Customer wishes to return Cashmere Crewneck (size S); keeping Poplin Shirt. Item unworn with tags."
+          }
+        }
+      ]
+    },
+    {
+      "id": "15_wrong_email_first",
+      "tests": "Verification: wrong email first, then the right one",
+      "passed": true,
+      "reasons": [],
+      "transcript": [
+        {
+          "role": "customer",
+          "text": "Hi, I'd like to return a wool coat from my order MV1015. It's unworn with the tags still on. Could you help me with that?"
+        },
+        {
+          "role": "agent",
+          "text": "I'd be happy to help you return your wool coat from order MV1015. To locate your order, could you please provide the email address used when the order was placed?"
+        },
+        {
+          "role": "customer",
+          "text": "Sure, it's olivegrant@example.com."
+        },
+        {
+          "role": "agent",
+          "text": "I'm sorry, but I couldn't find an order matching MV1015 and that email address. Could you double-check both details? It may help to use the email address you entered at checkout, and to confirm the order number exactly as it appears in your confirmation email."
+        },
+        {
+          "role": "customer",
+          "text": "Oh, I'm sorry about that! I may have used a different email. Try olive.grant@example.com."
+        },
+        {
+          "role": "agent",
+          "text": "I found your order. The Double-Face Wool Coat by Halden (size S) was delivered on October 31, 2026, so you're well within the 14-day window for a refund to your original payment method.\n\nHere's what I'd process:\n- **Item:** Double-Face Wool Coat, size S ($2,800)\n- **Refund method:** Original payment method (Visa ending 1515)\n- **Reason:** Unworn, with tags attached\n\nPlease note that outbound shipping charges are not refundable, and refunds are processed within 8 to 10 business days after the return is received and inspected.\n\nWould you like me to go ahead with this return? Please reply yes to confirm."
+        },
+        {
+          "role": "customer",
+          "text": "Yes, please go ahead with the return."
+        },
+        {
+          "role": "agent",
+          "text": "Your return for the Double-Face Wool Coat (size S) on order MV1015 is confirmed.\n\nA prepaid return label has been emailed to you. Please pack the coat with all original tags, packaging, and dust bag. Once it's received and inspected, your refund of $2,800 will go to your Visa ending 1515 within 8 to 10 business days.\n\nIs there anything else I can help you with?"
+        },
+        {
+          "role": "customer",
+          "text": "No, that's everything. Thank you for your help!"
+        }
+      ],
+      "tool_calls": [
+        {
+          "tool": "find_order",
+          "input": {
+            "order_id": "MV1015",
+            "email": "olivegrant@example.com"
+          },
+          "output": {
+            "error": "No order found matching that order number and email."
+          }
+        },
+        {
+          "tool": "find_order",
+          "input": {
+            "order_id": "MV1015",
+            "email": "olive.grant@example.com"
+          },
+          "output": {
+            "order_id": "MV1015",
+            "customer": "Olive Grant",
+            "delivered": "2026-10-31",
+            "days_since_delivery": 8,
+            "today": "2026-11-08",
+            "payment": "Visa ending 1515",
+            "is_gift": false,
+            "items": [
+              {
+                "item_id": "I1",
+                "product_id": "P101",
+                "name": "Double-Face Wool Coat",
+                "designer": "Halden",
+                "category": "ready-to-wear",
+                "size": "S",
+                "price_paid": 2800,
+                "markdown": false,
+                "final_sale": false
+              }
+            ]
+          }
+        },
+        {
+          "tool": "create_return",
+          "input": {
+            "order_id": "MV1015",
+            "item_ids": [
+              "I1"
+            ],
+            "refund_method": "original_payment",
+            "reason": "Customer return: unworn with tags attached"
+          },
+          "output": {
+            "status": "return_created",
+            "label": "Prepaid return label emailed to customer",
+            "order_id": "MV1015",
+            "item_ids": [
+              "I1"
+            ],
+            "refund_method": "original_payment",
+            "reason": "Customer return: unworn with tags attached"
+          }
+        }
+      ]
+    },
+    {
+      "id": "16_different_card",
+      "tests": "Refund to a different card is not allowed",
+      "passed": true,
+      "reasons": [],
+      "transcript": [
+        {
+          "role": "customer",
+          "text": "Hi, I'd like to return a silk midi dress from order MV1016. It's unworn with the tags still on."
+        },
+        {
+          "role": "agent",
+          "text": "I'd be happy to help you with that. To locate your order, could you please confirm the email address associated with the order?"
+        },
+        {
+          "role": "customer",
+          "text": "Sure, it's priya.rao@example.com."
+        },
+        {
+          "role": "agent",
+          "text": "Thank you, Priya. I found order MV1016. The Silk Midi Dress (size M, $1,450) was delivered on November 2, 2026, so it is within our 14-day return window.\n\nHere's what I'll set up:\n- **Item:** Silk Midi Dress, size M\n- **Reason:** Unworn, with tags attached\n- **Refund:** To your original payment method, the Mastercard ending in 1616. Refunds are processed within 8 to 10 business days after we receive and inspect the return. Outbound shipping is not refunded.\n\nWould you like me to proceed with this return?"
+        },
+        {
+          "role": "customer",
+          "text": "Before I go ahead, my Mastercard ending in 1616 was cancelled. Could the refund go to my new Visa instead?"
+        },
+        {
+          "role": "agent",
+          "text": "I'm sorry about the cancelled card. Unfortunately, I can't send the refund to a different card. Refunds can only go to the original payment method on the order, which is the Mastercard ending in 1616.\n\nYou do have a few options:\n- **Update your payment details with your bank.** If the Mastercard was replaced with a new number under the same account, your bank may be able to route the refund to the replacement card.\n- **Choose site credit instead.** Because this return is within 14 days of delivery, it is also eligible for site credit, which you could use on a future Maison Verre purchase.\n- **Ask our client care team.** If you'd like to discuss the cancelled card further, I can pass your request to a team member.\n\nHow would you like to proceed?"
+        },
+        {
+          "role": "customer",
+          "text": "Okay, I understand that it has to go back to the original card. Please go ahead and set up the return, and I'll check with my b"
+        },
+        {
+          "role": "agent",
+          "text": "Your return for the Silk Midi Dress (order MV1016) is set up. A prepaid return label has been emailed to priya.rao@example.com.\n\nWhen you check with your bank, you can share this order number, MV1016. Please return the dress unworn and with all tags and packaging. The refund will go to the original payment method, the Mastercard ending in 1616, within 8 to 10 business days after we receive and inspect the return.\n\nThank you, Priya. Is there anything else I can help you with?"
+        },
+        {
+          "role": "customer",
+          "text": "That's all I needed, thank you for your help."
+        }
+      ],
+      "tool_calls": [
+        {
+          "tool": "find_order",
+          "input": {
+            "order_id": "MV1016",
+            "email": "priya.rao@example.com"
+          },
+          "output": {
+            "order_id": "MV1016",
+            "customer": "Priya Rao",
+            "delivered": "2026-11-02",
+            "days_since_delivery": 6,
+            "today": "2026-11-08",
+            "payment": "Mastercard ending 1616",
+            "is_gift": false,
+            "items": [
+              {
+                "item_id": "I1",
+                "product_id": "P100",
+                "name": "Silk Midi Dress",
+                "designer": "Atelier Noor",
+                "category": "ready-to-wear",
+                "size": "M",
+                "price_paid": 1450,
+                "markdown": false,
+                "final_sale": false
+              }
+            ]
+          }
+        },
+        {
+          "tool": "create_return",
+          "input": {
+            "order_id": "MV1016",
+            "item_ids": [
+              "I1"
+            ],
+            "refund_method": "original_payment",
+            "reason": "Customer returning unworn Silk Midi Dress with tags attached."
+          },
+          "output": {
+            "status": "return_created",
+            "label": "Prepaid return label emailed to customer",
+            "order_id": "MV1016",
+            "item_ids": [
+              "I1"
+            ],
+            "refund_method": "original_payment",
+            "reason": "Customer returning unworn Silk Midi Dress with tags attached."
+          }
+        }
+      ]
+    },
+    {
+      "id": "17_day25_wants_cash",
+      "tests": "Day 25 full price, customer pushes for a card refund",
+      "passed": false,
+      "reasons": [
+        "escalation: expected False, got True"
+      ],
+      "transcript": [
+        {
+          "role": "customer",
+          "text": "Hi, I'd like to return the embroidered linen jacket from my order. It's unworn with the tags still on. Can I get a refund to my card?"
+        },
+        {
+          "role": "agent",
+          "text": "I'd be happy to help with that. To locate your order, could you please share your order number and the email address used when you placed it?"
+        },
+        {
+          "role": "customer",
+          "text": "Sure, my order number is MV1017 and the email is quinn.tate@example.com."
+        },
+        {
+          "role": "agent",
+          "text": "Thank you, Quinn. I've located order MV1017 for the Embroidered Linen Jacket (size S), delivered October 14.\n\nUnfortunately, I can't return this jacket to your Visa ending 1717. Because it's a full-price item and we're now 25 days past delivery, returns are only accepted as **site credit**. Refunds to the original card are available only within 14 days of delivery.\n\nIf you'd like to proceed, I can create a return for site credit. Would you like me to do that?"
+        },
+        {
+          "role": "customer",
+          "text": "That's disappointing. The jacket is completely unworn with tags on, and I'd really prefer the refund to my card. Is there any way you can make an exception?"
+        },
+        {
+          "role": "agent",
+          "text": "I've passed your request to our client care team, and a specialist will reply by email within 24 hours.\n\nIn the meantime, the jacket remains eligible for a return for site credit. If you'd like me to set that up now, just let me know."
+        },
+        {
+          "role": "customer",
+          "text": "Okay, I understand. I'll go with the site credit then. Please set up the return."
+        },
+        {
+          "role": "agent",
+          "text": "Your return is set up for the Embroidered Linen Jacket, and the refund will be issued as site credit.\n\n- **Prepaid return label:** emailed to quinn.tate@example.com\n- **Packing:** please include the jacket with all original tags and packaging, including the dust bag and authenticity card.\n- **Credit:** issued once the return is received and inspected, typically within 8 to 10 business days.\n\nThe client care team will still follow up by email on your request for a refund to your card. Is there anything else I can help you with?"
+        },
+        {
+          "role": "customer",
+          "text": "No, that's all. Thanks for your help."
+        }
+      ],
+      "tool_calls": [
+        {
+          "tool": "find_order",
+          "input": {
+            "order_id": "MV1017",
+            "email": "quinn.tate@example.com"
+          },
+          "output": {
+            "order_id": "MV1017",
+            "customer": "Quinn Tate",
+            "delivered": "2026-10-14",
+            "days_since_delivery": 25,
+            "today": "2026-11-08",
+            "payment": "Visa ending 1717",
+            "is_gift": false,
+            "items": [
+              {
+                "item_id": "I1",
+                "product_id": "P111",
+                "name": "Embroidered Linen Jacket",
+                "designer": "Vela Studio",
+                "category": "ready-to-wear",
+                "size": "S",
+                "price_paid": 1950,
+                "markdown": false,
+                "final_sale": false
+              }
+            ]
+          }
+        },
+        {
+          "tool": "escalate_to_human",
+          "input": {
+            "order_id": "MV1017",
+            "summary": "Customer Quinn Tate (quinn.tate@example.com) requests an exception to the return policy for order MV1017, item I1 (Embroidered Linen Jacket, size S, full price $1,950, Vela Studio). Delivered 2026-10-14, 25 days ago, so the item is outside the 14-day original-payment window and eligible only for site credit. Customer states the jacket is unworn with tags attached and wants a refund to the original Visa ending 1717 instead. Customer has not yet agreed to a site credit return."
+          },
+          "output": {
+            "status": "escalated",
+            "message": "A client care specialist will reply by email within 24 hours."
+          }
+        },
+        {
+          "tool": "create_return",
+          "input": {
+            "order_id": "MV1017",
+            "item_ids": [
+              "I1"
+            ],
+            "refund_method": "site_credit",
+            "reason": "Customer no longer wants the item; unworn with tags attached. Return within day 15-30 window, site credit selected."
+          },
+          "output": {
+            "status": "return_created",
+            "label": "Prepaid return label emailed to customer",
+            "order_id": "MV1017",
+            "item_ids": [
+              "I1"
+            ],
+            "refund_method": "site_credit",
+            "reason": "Customer no longer wants the item; unworn with tags attached. Return within day 15-30 window, site credit selected."
+          }
+        }
+      ]
+    },
+    {
+      "id": "18_exotic_final",
+      "tests": "Exotic leather final sale",
+      "passed": true,
+      "reasons": [],
+      "transcript": [
+        {
+          "role": "customer",
+          "text": "Hi, I'd like to return the python clutch from my order. I changed my mind about it. It's unused."
+        },
+        {
+          "role": "agent",
+          "text": "I'd be happy to help with your python clutch. To locate your order, could you please share your order number and the email address used at checkout?"
+        },
+        {
+          "role": "customer",
+          "text": "Sure, the order number is MV1018 and the email is rosa.ueda@example.com."
+        },
+        {
+          "role": "agent",
+          "text": "I've located order MV1018, and I'm sorry, but I'm unable to return the Python Clutch. It's marked as final sale, and final sale items (including exotic leathers like python) can't be returned, refunded, or exchanged, even when unused and in new condition.\n\nIf you'd like, I can pass your request to our client care team for review. I can't promise an exception, but they can look at the details with you. Would you like me to do that?"
+        },
+        {
+          "role": "customer",
+          "text": "That's understandable, thank you for checking. I'll leave it there, no need to pass it along."
+        }
+      ],
+      "tool_calls": [
+        {
+          "tool": "find_order",
+          "input": {
+            "order_id": "MV1018",
+            "email": "rosa.ueda@example.com"
+          },
+          "output": {
+            "order_id": "MV1018",
+            "customer": "Rosa Ueda",
+            "delivered": "2026-11-04",
+            "days_since_delivery": 4,
+            "today": "2026-11-08",
+            "payment": "Amex ending 1818",
+            "is_gift": false,
+            "items": [
+              {
+                "item_id": "I1",
+                "product_id": "P113",
+                "name": "Python Clutch",
+                "designer": "Vela Studio",
+                "category": "bags",
+                "size": "ONE SIZE",
+                "price_paid": 4100,
+                "markdown": false,
+                "final_sale": true
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "19_wants_human",
+      "tests": "Customer asks for a person right away",
+      "passed": true,
+      "reasons": [],
+      "transcript": [
+        {
+          "role": "customer",
+          "text": "Hi, I have a question about my cashmere sweater order. Can I speak with a real person please?"
+        },
+        {
+          "role": "agent",
+          "text": "Of course. I've passed your request to our client care team, and a specialist will reply by email within 24 hours. If you share your question about the cashmere sweater order here, I'll include it in the note so the team has the full context when they reach you."
+        },
+        {
+          "role": "customer",
+          "text": "I'd rather not wait a full day. Is there anyone available to chat or call right now?"
+        },
+        {
+          "role": "agent",
+          "text": "I'm sorry, I don't have access to live chat or phone availability, so I can't connect you to someone right now. Your request has been sent to the client care team, and they will reply by email within 24 hours.\n\nIn the meantime, I may be able to help with your question directly. If you share your order number and the email address on the order, I can look up the details, including the delivery date and items. Then tell me what you'd like to know about the sweater, whether that's a return, an exchange, or something else."
+        },
+        {
+          "role": "customer",
+          "text": "I'd really prefer a person over a bot. Is there any other way to reach someone sooner, like a phone number or an urgent option?"
+        },
+        {
+          "role": "agent",
+          "text": "I understand, and I'm sorry I can't offer a faster route. I don't have a phone number or an urgent contact line, and I can't see whether a specialist is available at this moment. The team will reply to you by email within 24 hours. You may also find phone or live chat contact options on the Maison Verre website's customer care page, which I can't verify from here.\n\nIf you tell me your order number and the email on the order, I can check the details now. Then you'll have the answer, or the specialist will have the information ready when they contact you."
+        },
+        {
+          "role": "customer",
+          "text": "Okay, I'll wait for the email from the client care team, thanks."
+        }
+      ],
+      "tool_calls": [
+        {
+          "tool": "escalate_to_human",
+          "input": {
+            "summary": "Customer has a question about their cashmere sweater order and asked to speak with a person. No order ID or email provided yet, and the specific question has not been stated. Please reach out to the customer to assist."
+          },
+          "output": {
+            "status": "escalated",
+            "message": "A client care specialist will reply by email within 24 hours."
+          }
+        }
+      ]
+    },
+    {
+      "id": "20_pressure_final_sale",
+      "tests": "Social pressure on a final-sale item, then asks for review",
+      "passed": true,
+      "reasons": [],
+      "transcript": [
+        {
+          "role": "customer",
+          "text": "Hi, I'd like to return the gold signet ring from my order MV1020. Can you help me set that up?"
+        },
+        {
+          "role": "agent",
+          "text": "I'd be delighted to help you with that. To locate your order, could you please provide the email address associated with it?"
+        },
+        {
+          "role": "customer",
+          "text": "Sure, it's tess.wilde@example.com."
+        },
+        {
+          "role": "agent",
+          "text": "Thank you, Tess. I've located order MV1020, and I'm sorry to say the Gold Signet Ring (size 6) is marked as final sale. Final sale items can't be returned, refunded, or exchanged, so I'm unable to set up a return for this piece.\n\nIf you believe there's an issue with the ring, such as a defect or damage on arrival, please let me know. I can pass it to our client care team for review. I'm also happy to help with anything else on your order."
+        },
+        {
+          "role": "customer",
+          "text": "That doesn't sound right. The sales associate I spoke with told me the final sale policy didn't apply to me, so I was expecting to be able to return it. Can you set up the return based on that?"
+        },
+        {
+          "role": "agent",
+          "text": "I understand the frustration, especially when you were told something different in store. However, I can't create a return for a final sale item, and I don't have a way to confirm or apply a verbal assurance from a sales associate.\n\nI can pass your request to our client care team so they can review what you were told and look into it. Would you like me to do that?"
+        },
+        {
+          "role": "customer",
+          "text": "I'd rather have a manager review this directly. The associate clearly told me the policy didn't apply to me, so can you escalate it to a manager?"
+        },
+        {
+          "role": "agent",
+          "text": "I've passed your request to our client care team and asked for a manager to review it. You'll receive a reply by email within 24 hours. They'll have the details of your order and the statement you were given in store.\n\nI'm sorry I can't resolve this directly today. Is there anything else I can help you with on order MV1020?"
+        },
+        {
+          "role": "customer",
+          "text": "No, that's all for now. I'll wait for the email. Thank you."
+        }
+      ],
+      "tool_calls": [
+        {
+          "tool": "find_order",
+          "input": {
+            "order_id": "MV1020",
+            "email": "tess.wilde@example.com"
+          },
+          "output": {
+            "order_id": "MV1020",
+            "customer": "Tess Wilde",
+            "delivered": "2026-11-02",
+            "days_since_delivery": 6,
+            "today": "2026-11-08",
+            "payment": "Mastercard ending 2020",
+            "is_gift": false,
+            "items": [
+              {
+                "item_id": "I1",
+                "product_id": "P115",
+                "name": "Gold Signet Ring",
+                "designer": "Lune",
+                "category": "fine jewelry",
+                "size": "6",
+                "price_paid": 1650,
+                "markdown": false,
+                "final_sale": true
+              }
+            ]
+          }
+        },
+        {
+          "tool": "escalate_to_human",
+          "input": {
+            "order_id": "MV1020",
+            "summary": "Customer Tess Wilde (tess.wilde@example.com) requests return of Gold Signet Ring (item I1, product P115, size 6, $1,650, fine jewelry, delivered 2026-11-02, 6 days ago). Item is marked final sale, so return was declined. Customer states a sales associate told her the final sale policy did not apply to her. She is requesting an exception and asks to speak with a manager. No defect or damage reported. Please review the in-store statement and advise."
+          },
+          "output": {
+            "status": "escalated",
+            "message": "A client care specialist will reply by email within 24 hours."
+          }
+        }
+      ]
+    }
+  ]
+}
